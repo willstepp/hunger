@@ -27,12 +27,8 @@ textarea {
 
 a:focus, a:hover, a:active { outline:none; }
 
-::selection { 
-  background:#B9B9B9; color:#000000; 
-}
-::-moz-selection { 
-  background:#B9B9B9; color:#000000; 
-}
-::-webkit-selection { 
-  background:#B9B9B9; color:#000000; 
+.nav-links {
+  color:#323232;
+  text-decoration:none;
+  font-size:0.8em;
 }
