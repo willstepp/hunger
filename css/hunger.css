@@ -1,0 +1,38 @@
+body {
+  background-color:black;
+  color:#efefef;
+  font-family:"Helvetica Neue" "Helvetica", "Arial", "Sans-serif";
+}
+
+#app {
+  margin:0 auto;
+  text-align:center;
+}
+
+#neb-img {
+  max-width:100%;
+}
+
+textarea {
+  padding:10px;
+  width:75%;
+  border-radius:.25em;
+  outline:none;
+  border:0;
+  background-color:#222;
+  color:#efefef;
+  resize:none;
+  font-size:1.0em;
+}
+
+a:focus, a:hover, a:active { outline:none; }
+
+::selection { 
+  background:#B9B9B9; color:#000000; 
+}
+::-moz-selection { 
+  background:#B9B9B9; color:#000000; 
+}
+::-webkit-selection { 
+  background:#B9B9B9; color:#000000; 
+}
