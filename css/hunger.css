@@ -13,7 +13,8 @@ body {
   max-width:100%;
 }
 
-textarea {
+#console {
+  text-align:left;
   padding:10px;
   width:75%;
   border-radius:.25em;
@@ -23,6 +24,7 @@ textarea {
   color:#efefef;
   resize:none;
   font-size:1.0em;
+  margin:0 auto;
 }
 
 a:focus, a:hover, a:active { outline:none; }
@@ -31,4 +33,17 @@ a:focus, a:hover, a:active { outline:none; }
   color:#323232;
   text-decoration:none;
   font-size:0.8em;
+}
+
+.line {
+
+}
+
+.line input {
+  width:95%;
+  background-color:#222;
+  outline:none;
+  border:0;
+  color:#efefef;
+  font-size:1.0em;
 }
