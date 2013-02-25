@@ -14,6 +14,13 @@ hc['tab_activated'] = false;
 hc['tab_index'] = -1;
 hc['tab_command'] = '';
 
+hc['commands'] = {
+  'clear':'clears the console',
+  'help':'prints a list of available commands',
+  'end':'ends the game',
+  'begin':'starts the game'
+}
+
 hc['init'] = function (el) {
   $(el).empty();
 
@@ -132,16 +139,19 @@ hc['newline'] = function (el, info) {
   }
 }
 
-hc['processCommand']  = function (c) {
+hc['processCommand'] = function (c) {
+  var ci;
   if (c.localeCompare('clear') == 0) {
     hc.clearConsole();
   } else if(c.localeCompare('help') == 0) {
-    //print list of available commands and what they do
-    hc.newline(hc.el, 'test');
+    hc.newline(hc.el, 'clear: clears the console');
+    hc.newline(hc.el, 'help: prints a list of available commands');
+    hc.newline(hc.el, 'end: ends the game');
+    hc.newline(hc.el, 'begin: starts the game');
     hc.newline(hc.el);
   } else {
      hc.newline(hc.el); 
-   }
+  }
 }
 
 hc['clearConsole'] = function () {
