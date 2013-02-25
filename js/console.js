@@ -1,74 +1,150 @@
 var hunger = hunger || {};
 hunger.console = hunger.console || {};
 
-hunger.console['line'] = '<div class="line"><span>>&nbsp;</span><input class="active" type="text" maxlength="100"/></div>';
-hunger.console['el'] = '';
-hunger.console['history'] = [];
-hunger.console['history_index'] = 0;
+//shorthand
+var hc = hunger.console;
 
-hunger.console['init'] = function (el) {
+hc['line'] = '<div class="line"><span>>&nbsp;</span><input class="active" type="text" maxlength="100"/></div>';
+hc['el'] = '';
+
+hc['history'] = [];
+hc['history_index'] = 0;
+
+hc['tab_activated'] = false;
+hc['tab_index'] = -1;
+hc['tab_command'] = '';
+
+hc['init'] = function (el) {
   $(el).empty();
 
-  hunger.console.el = el;
-  hunger.console.history = [];
-  hunger.console.history_index = 0;
+  hc.el = el;
+  hc.history = [];
+  hc.history_index = 0;
+  hc.tab_activated = false;
+  hc.tab_index = -1;
+  hc.tab_command = '';
 
   $(el).on("keydown", ".active", function (e) {
+
+    if(e.which !== 9) {
+      //turn off tab helpers
+      hc.tab_activated = false;
+      hc.tab_index = -1;
+    }
 
     if (e.which === 13) { //enter
       var c = $('.active').val();
 
-      hunger.console.history.push(c);
-      hunger.console.history_index = (hunger.console.history.length - 1);
+      hc.history.push(c);
+      hc.history_index = (hc.history.length - 1);
 
-      hunger.console.processCommand(c);
+      hc.processCommand(c);
       return false;
     }
 
-    if (hunger.console.history.length > 0) {
+    if (e.which === 9) { //tab
+      var c, i, ta_i;
+      
+      if (hc.tab_activated) {
+        c = hc.tab_command;
+
+        //start looking just after the current tab item
+        ta_i = hc.tab_index+1;
+        for(;;) {
+          
+          var item = hc.history[ta_i];
+          if (item) {
+            if (item.substring(0, c.length) === c) {
+              hc.tab_index = ta_i;
+              $('.active').val(item);
+              return false;
+            }
+          }
+          if (ta_i >= (hc.history.length-1)) {
+            //if nothing found, start over
+            hc.tab_index = -1;
+            ta_i = 0;
+          } else {
+            ta_i++;
+          }
+
+        }
+      } else {
+        c = $('.active').val();
+        if (c.length > 0) {
+          for(i = 0; i < hc.history.length; i++) {
+            if (hc.history[i].substring(0, c.length) === c) {
+
+              hc.tab_activated = true;
+              hc.tab_index = i;
+              hc.tab_command = c;
+
+              $('.active').val(hc.history[i]);
+              return false;
+            }
+          }
+        }
+        return false;
+      }
+    }
+
+    if (hc.history.length > 0) {
        if (e.which === 38) { //up arrow
 
-        var history_item = hunger.console.history[hunger.console.history_index];
+        var history_item = hc.history[hc.history_index];
         $('.active').val(history_item);
 
-        if (hunger.console.history_index > 0) {
-          hunger.console.history_index--;
+        if (hc.history_index > 0) {
+          hc.history_index--;
         } 
         return false;
       } else if (e.which === 40) { //down arrow
-          if (hunger.console.history_index < (hunger.console.history.length - 1)) {
-            hunger.console.history_index++;
-            var history_item = hunger.console.history[hunger.console.history_index];
-            $('.active').val(history_item);
-          } else {
-            $('.active').val('');
-          }
-          return false;
+        if (hc.history_index < (hc.history.length - 1)) {
+          hc.history_index++;
+          var history_item = hc.history[hc.history_index];
+          $('.active').val(history_item);
+        } else {
+          $('.active').val('');
+        }
+        return false;
       }
     }
   });
 
-  hunger.console.newline(el);
+  hc.newline(el);
 }
 
-hunger.console['newline'] = function (el) {
-  $('.active').each(function () {
+hc['newline'] = function (el, info) {
+ $('.active').each(function () {
     $(this).attr('disabled', 'disabled');
     $(this).removeClass('active');
+    $(this).addClass('inactive');
   });
-  var nl = $(el).append(hunger.console.line);
-  $('.active').focus();
+  if (info) {
+    var nl = $(el).append(hc.line);
+    $('.active').attr('disabled', 'disabled');
+    $('.active').addClass('info');
+    $('.active').val(info);
+  } else {
+    var nl = $(el).append(hc.line);
+    $('.active').addClass('user');
+    $('.active').focus();
+  }
 }
 
-hunger.console['processCommand']  = function (command) {
-  if (command.localeCompare('clear') == 0) {
-    hunger.console.clearConsole();
+hc['processCommand']  = function (c) {
+  if (c.localeCompare('clear') == 0) {
+    hc.clearConsole();
+  } else if(c.localeCompare('help') == 0) {
+    //print list of available commands and what they do
+    hc.newline(hc.el, 'test');
+    hc.newline(hc.el);
   } else {
-     hunger.console.newline(hunger.console.el); 
+     hc.newline(hc.el); 
    }
 }
 
-hunger.console['clearConsole'] = function () {
-  $(hunger.console.el).empty();
-  hunger.console.newline(hunger.console.el);
+hc['clearConsole'] = function () {
+  $(hc.el).empty();
+  hc.newline(hc.el);
 }

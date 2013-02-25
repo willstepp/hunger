@@ -1,6 +1,5 @@
 body {
   background-color:black;
-  color:#efefef;
   font-family:"Helvetica Neue" "Helvetica", "Arial", "Sans-serif";
 }
 
@@ -21,7 +20,6 @@ body {
   outline:none;
   border:0;
   background-color:#222;
-  color:#efefef;
   resize:none;
   font-size:1.0em;
   margin:0 auto;
@@ -35,10 +33,6 @@ a:focus, a:hover, a:active { outline:none; }
   font-size:0.8em;
 }
 
-.line {
-
-}
-
 .line input {
   width:95%;
   background-color:#222;
@@ -46,4 +40,12 @@ a:focus, a:hover, a:active { outline:none; }
   border:0;
   color:#efefef;
   font-size:1.0em;
+}
+
+input.inactive {
+  color: #888888;
+}
+
+input.inactive.info {
+  color: #b9daff;
 }
